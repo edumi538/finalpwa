@@ -1,39 +1,42 @@
 let notes = window.localStorage.getItem('notes') || '{"data": []}';
 notes = JSON.parse(notes);
 
-
 let updateList = function () {
-
     console.log('[Application] start watch');
 
-    Array.observe(notes.data, function (changes){
+    Array.observe(notes.data, function (changes) {
         let index = null;
         let value = '';
         let status = null;
 
-        if(changes[0].type === 'splice'){
+        if (changes[0].type === 'splice') {
             index = changes[0].index;
             value = changes[0].object[index];
             status = (changes[0].addedCount > 0) ? 'created' : 'removed';
         }
-        if(changes[0].type === 'update'){
+
+        if (changes[0].type === 'update') {
             index = changes[0].name;
             value = changes[0].object[index];
             status = 'updated';
         }
-        if(!value && status === 'created' && status === 'updated'){
+
+        if (!value && status === 'created' && status === 'updated') {
             return;
         }
+
         let notesTag = document.getElementById('notes');
 
-        if(status === 'updated'){
+        if (status === 'updated') {
             console.log('implementar');
         }
-        if(status === 'removed'){
+
+        if (status === 'removed') {
             let listOfNotes = document.querySelectorAll('#notes li');
-            notesTag.removeChild(listOfNotes[index]); 
+            notesTag.removeChild(listOfNotes[index]);
         }
-        if(status === 'created'){
+
+        if (status === 'created') {
             let newLi = document.createElement('li');
             newLi.innerHTML = value;
             notesTag.appendChild(newLi);
@@ -41,7 +44,6 @@ let updateList = function () {
 
         window.localStorage.setItem('notes', JSON.stringify(notes));
     });
-
 }
 
 let createNote = function () {
@@ -55,45 +57,45 @@ let createNote = function () {
 
 updateList();
 
-document.addEventListener('DOMContentLoaded', function (event){
+document.addEventListener('DOMContentLoaded', function (event) {
     let listOfNotes = document.getElementById('notes');
     let listHtml = '';
 
-    for(let i=0; i<notes.data.length;i++){
-        listHtml += '<li>' + notes.data[i] + '</li>';
+    for(let i=0; i< notes.data.length; i++) {
+        listHtml += '<li>' + notes.data[i] +  '</li>';
     }
+
     listOfNotes.innerHTML = listHtml;
 
     let formAddNotes = document.getElementById('form-add-note')
-    formAddNotes.addEventListener('submit', function (e){
+    formAddNotes.addEventListener('submit', function (e) {
         e.preventDefault();
         createNote();
     });
-
 });
 
-document.addEventListener('click', function(e){
+document.addEventListener('click', function (e) {
     let notesTag = document.getElementById('notes');
 
-    if(e.target.parentElement === notesTag){
-        if(confirm('remover esta nota?')){
+    if (e.target.parentElement === notesTag) {
+        if (confirm('remover esta nota?')) {
             let listOfNotes = document.querySelectorAll('#notes li');
-            listOfNotes.forEach(function (item, index){
-                if(e.target === item){
+            listOfNotes.forEach(function (item, index) {
+                if (e.target === item) {
                     notes.data.splice(index, 1);
                 }
-            })
+            });
         }
     }
 });
 
-if('serviceWorker' in navigator){
+if ('serviceWorker' in navigator) {
     navigator.serviceWorker
     .register('./service-worker.js')
-    .then(function(reg){
+    .then(function(reg) {
         console.log('Service worker Registered');
     })
-    .catch(function (err){
+    .catch(function (err) {
         console.log('erro', err);
     });
 }
