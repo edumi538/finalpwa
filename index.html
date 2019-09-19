@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
-    <base href="/pwa-example/" />
+    <base href="/" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -10,15 +10,30 @@
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/colors.css" />
 
-    <link rel="manifest" href="manifest.json"/>
+    <link rel="manifest" href="manifest.json" />
 
-
+    <script src="https://www.gstatic.com/firebasejs/6.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-messaging.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyDPMnM7PVBd85FF7kqrOnNNzdCLV25hpww",
+        authDomain: "pwa-example-5e112.firebaseapp.com",
+        databaseURL: "https://pwa-example-5e112.firebaseio.com",
+        projectId: "pwa-example-5e112",
+        storageBucket: "",
+        messagingSenderId: "824658242094",
+        appId: "1:824658242094:web:361c8915d1cea46325cdbf"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
     <script src="js/object.observe.polyfill.js"></script>
     <script src="js/array.observe.polyfill.js"></script>
     <script src="js/scripts.js"></script>
+    <script src="js/push.js"></script>
   </head>
   <body class="grey lighten-5 blue-grey-text">
-
     <!-- Titulo da Página -->
     <header id="header" class="container grey lighten-4">
       <h1>
@@ -27,16 +42,16 @@
     </header>
     <!-- Conteudo da Página -->
     <div id="content" class="container grey lighten-2">
-        <p>Adicione suas anotações a seguir</p>
-        <!-- Formulário -->
-        <form id="form-add-note" class="row">
-            <input type="text" placeholder="Anotações..." class="col-2 white">
-            <input type="submit" value="+" class="blue-grey white-text col-1">
-        </form>
-        <!-- Lista -->
-        <ul id="notes">
-            <li>Nota</li>
-        </ul>
+      <p>Adicione suas anotações a seguir</p>
+      <!-- Formulário -->
+      <form id="form-add-note" class="row">
+        <input type="text" placeholder="Anotações..." class="col-2 white" />
+        <input type="submit" value="+" class="blue-grey white-text col-1" />
+      </form>
+      <!-- Lista -->
+      <ul id="notes">
+        <li>Nota</li>
+      </ul>
     </div>
   </body>
 </html>
