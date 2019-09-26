@@ -7,7 +7,10 @@ messaging.requestPermission().then(function () {
 
     return messaging.getToken().then(function (currentToken) {
         if (currentToken) {
-            console.log(currentToken);
+            let pushToken = document.getElementById('receive-token')
+            pushToken.addEventListener('submit',function (e){
+                alert(JSON.stringify(currentToken,null, 4));
+            })
             return currentToken;
         } else {
             console.warn('Nenhum id disponível, Solicite permissão apra gerar um');
