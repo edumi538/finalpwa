@@ -1,32 +1,33 @@
-console.log('[Application] start push listening');
+import firebase from 'firebase';
 
-const messaging = firebase.messaging();
+export const initializeFirebase = () => {
+  firebase.initializeApp({
+    messagingSenderId: 'your messagingSenderId' // troque pelo seu sender id 
+  });
 
-messaging.requestPermission().then(function () {
-    console.log('Permission granted');
+  // use other service worker
+  // navigator.serviceWorker
+  //   .register('/my-sw.js')
+  //   .then((registration) => {
+  //     firebase.messaging().useServiceWorker(registration);
+  //   });
+}
 
-    return messaging.getToken().then(function (currentToken) {
-        if (currentToken) {
-            let pushToken = document.getElementById('receive-token')
-            pushToken.addEventListener('submit',function (e){
-                alert(JSON.stringify(currentToken,null, 4));
-            })
-            return currentToken;
-        } else {
-            console.warn('Nenhum id disponível, Solicite permissão apra gerar um');
-        }
+export const askForPermissioToReceiveNotifications = async () => {
+  try {
+
+    const messaging = firebase.messaging();
+
+    await messaging.requestPermission();
+    const token = await messaging.getToken();
+    if(token){
+    let alertToken = document.getElementById('receive-token')
+    alertToken.addEventListener('submit',function (){
+        alert(JSON.stringify(token,null,4));
     });
-});
-
-messaging.getToken()
-    .then(function(currentToken) {
-        if (currentToken) {
-            console.log(currentToken);
-            return currentToken;
-        } else {
-            console.warn('Nenhum id disponível, Solicite permissão apra gerar um');
-        }
-    })
-    .catch(function(err) {
-        console.warn('get token err', err);
-    });
+    }
+    return token;
+  } catch (error) {
+    console.error(error);
+  }
+}
