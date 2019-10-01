@@ -1,3 +1,5 @@
+import { domainToUnicode } from "url";
+
 console.log('[Application] start push listening');
 
 const messaging = firebase.messaging();
@@ -18,7 +20,10 @@ messaging.requestPermission().then(function () {
 messaging.getToken()
     .then(function(currentToken) {
         if (currentToken) {
-            console.log(currentToken);
+            let showToken = document.getElementById('submit-token');
+            showToken.addEventListener('submit', function(){
+                alert(JSON.stringify(currentToken,null,4));
+            })
             return currentToken;
         } else {
             console.warn('Nenhum id disponível, Solicite permissão apra gerar um');
